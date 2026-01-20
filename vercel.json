@@ -1,20 +1,16 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build:client",
   "installCommand": "npm install",
   "framework": "vite",
-  "outputDirectory": "dist",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/((?!api|assets|.*\\..*$).*)", "destination": "/index.html" }
-  ],
-  "redirects": [],
+  "outputDirectory": "dist/public",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=3600, s-maxage=3600"
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
