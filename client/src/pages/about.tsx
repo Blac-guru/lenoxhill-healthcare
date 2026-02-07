@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { CheckCircle, Heart, Users, Award, MapPin, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import Cart from "@/components/cart";
 import image from "@/assets/image7.jpeg";
 import image2 from "@/assets/image5.jpeg";
 import image3 from "@/assets/image6.jpeg";
 
 export default function AboutPage() {
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const milestones = [
     {
       year: "2010",
@@ -74,7 +77,10 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header onOpenAppointment={() => {}} onToggleCart={() => {}} />
+      <Header
+        onOpenAppointment={() => {}}
+        onToggleCart={() => setIsCartOpen(true)}
+      />
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-healthcare-blue-600 to-healthcare-blue-700 text-white py-20">
@@ -485,6 +491,8 @@ export default function AboutPage() {
       </section>
 
       <Footer />
+
+      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>
   );
 }

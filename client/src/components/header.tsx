@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Search, Menu, X, Calendar } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Heart, Search, Menu, X, Calendar, ShoppingCart } from "lucide-react";
+import type { CartItem } from "@shared/schema";
 
 interface HeaderProps {
   onOpenAppointment: () => void;
@@ -16,6 +19,16 @@ export default function Header({
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
+  const sessionId = "guest-session";
+
+  const { data: cartItems } = useQuery<CartItem[]>({
+    queryKey: ["/api/cart", sessionId],
+  });
+
+  const cartCount =
+    cartItems?.reduce((sum, item) => {
+      return sum + (item.quantity || 1);
+    }, 0) ?? 0;
 
   const isActive = (path: string) => {
     return location === path;
@@ -71,6 +84,17 @@ export default function Header({
                   Products
                 </Link>
                 <Link
+                  href="/wishlist"
+                  className={`px-3 py-2 text-sm font-medium transition-colors ${
+                    isActive("/wishlist")
+                      ? "text-healthcare-blue-600 border-b-2 border-healthcare-blue-600"
+                      : "text-gray-700 hover:text-healthcare-blue-600"
+                  }`}
+                  data-testid="nav-wishlist"
+                >
+                  Wishlist
+                </Link>
+                <Link
                   href="/about"
                   className={`px-3 py-2 text-sm font-medium transition-colors ${
                     isActive("/about")
@@ -103,6 +127,20 @@ export default function Header({
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 Book Appointment
+              </Button>
+              <Button
+                onClick={onToggleCart}
+                variant="outline"
+                className="border-healthcare-blue-200 text-healthcare-blue-600 hover:bg-healthcare-blue-50"
+                data-testid="button-cart"
+              >
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Cart
+                {cartCount > 0 && (
+                  <Badge className="ml-2 bg-healthcare-blue-600 text-white">
+                    {cartCount}
+                  </Badge>
+                )}
               </Button>
               <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
@@ -193,6 +231,18 @@ export default function Header({
                 Products
               </Link>
               <Link
+                href="/wishlist"
+                className={`block px-3 py-2 text-base font-medium ${
+                  isActive("/wishlist")
+                    ? "text-healthcare-blue-600 bg-healthcare-blue-50"
+                    : "text-gray-700 hover:text-healthcare-blue-600"
+                }`}
+                data-testid="mobile-nav-wishlist"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Wishlist
+              </Link>
+              <Link
                 href="/about"
                 className={`block px-3 py-2 text-base font-medium ${
                   isActive("/about")
@@ -226,6 +276,23 @@ export default function Header({
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 Book Appointment
+              </Button>
+              <Button
+                onClick={() => {
+                  onToggleCart();
+                  setIsMobileMenuOpen(false);
+                }}
+                variant="outline"
+                className="w-full mt-2 border-healthcare-blue-200 text-healthcare-blue-600"
+                data-testid="mobile-button-cart"
+              >
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Cart
+                {cartCount > 0 && (
+                  <Badge className="ml-2 bg-healthcare-blue-600 text-white">
+                    {cartCount}
+                  </Badge>
+                )}
               </Button>
             </div>
           </div>

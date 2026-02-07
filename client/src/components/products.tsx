@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart } from "lucide-react";
@@ -18,18 +24,35 @@ export default function Products({ onToggleCart }: ProductsProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All Categories");
   const [ageFilter, setAgeFilter] = useState("All Ages");
+  const [addingProductId, setAddingProductId] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   // Generate session ID for cart
   const sessionId = "guest-session";
 
+  const formatPrice = (price: string | number | null) => {
+    const amount = typeof price === "string" ? Number(price) : (price ?? 0);
+    if (Number.isNaN(amount)) {
+      return "KES 0.00";
+    }
+
+    return `KES ${amount.toLocaleString("en-KE", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  };
+
   const { data: products, isLoading } = useQuery<Product[]>({
-    queryKey: ['/api/products', { 
-      category: categoryFilter !== "All Categories" ? categoryFilter : undefined,
-      targetAge: ageFilter !== "All Ages" ? ageFilter : undefined,
-      search: searchTerm || undefined
-    }],
+    queryKey: [
+      "/api/products",
+      {
+        category:
+          categoryFilter !== "All Categories" ? categoryFilter : undefined,
+        targetAge: ageFilter !== "All Ages" ? ageFilter : undefined,
+        search: searchTerm || undefined,
+      },
+    ],
   });
 
   const addToCartMutation = useMutation({
@@ -37,12 +60,16 @@ export default function Products({ onToggleCart }: ProductsProps) {
       const response = await apiRequest("POST", "/api/cart", {
         sessionId,
         productId,
-        quantity: 1
+        quantity: 1,
       });
       return response.json();
     },
+    onMutate: (productId: string) => {
+      setAddingProductId(productId);
+      return { productId };
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/cart', sessionId] });
+      queryClient.invalidateQueries({ queryKey: ["/api/cart", sessionId] });
       toast({
         title: "Added to cart",
         description: "Product has been added to your cart successfully.",
@@ -54,7 +81,12 @@ export default function Products({ onToggleCart }: ProductsProps) {
         description: "Failed to add product to cart. Please try again.",
         variant: "destructive",
       });
-    }
+    },
+    onSettled: (_data, _error, _variables, context) => {
+      setAddingProductId((current) =>
+        current === context?.productId ? null : current,
+      );
+    },
   });
 
   const handleAddToCart = (productId: string) => {
@@ -90,11 +122,18 @@ export default function Products({ onToggleCart }: ProductsProps) {
     <section id="products" className="bg-white py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4" data-testid="text-products-title">
+          <h2
+            className="text-4xl font-bold text-gray-900 mb-4"
+            data-testid="text-products-title"
+          >
             Online Pharmacy
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto" data-testid="text-products-description">
-            Order prescription and over-the-counter medications online for convenient pickup or delivery.
+          <p
+            className="text-xl text-gray-600 max-w-3xl mx-auto"
+            data-testid="text-products-description"
+          >
+            Order prescription and over-the-counter medications online for
+            convenient pickup or delivery.
           </p>
         </div>
 
@@ -102,29 +141,39 @@ export default function Products({ onToggleCart }: ProductsProps) {
         <div className="bg-gray-50 rounded-lg p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="md:col-span-2">
-              <Input 
-                type="text" 
-                placeholder="Search medications, supplements..." 
+              <Input
+                type="text"
+                placeholder="Search medications, supplements..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full"
                 data-testid="input-product-search"
               />
             </div>
-            <Select value={categoryFilter} onValueChange={setCategoryFilter} data-testid="select-category-filter">
+            <Select
+              value={categoryFilter}
+              onValueChange={setCategoryFilter}
+              data-testid="select-category-filter"
+            >
               <SelectTrigger>
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="All Categories">All Categories</SelectItem>
                 <SelectItem value="Prescription">Prescription</SelectItem>
-                <SelectItem value="Over-the-Counter">Over-the-Counter</SelectItem>
+                <SelectItem value="Over-the-Counter">
+                  Over-the-Counter
+                </SelectItem>
                 <SelectItem value="Supplements">Supplements</SelectItem>
                 <SelectItem value="Baby Care">Baby Care</SelectItem>
                 <SelectItem value="Medical Devices">Medical Devices</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={ageFilter} onValueChange={setAgeFilter} data-testid="select-age-filter">
+            <Select
+              value={ageFilter}
+              onValueChange={setAgeFilter}
+              data-testid="select-age-filter"
+            >
               <SelectTrigger>
                 <SelectValue placeholder="All Ages" />
               </SelectTrigger>
@@ -141,46 +190,73 @@ export default function Products({ onToggleCart }: ProductsProps) {
         {/* Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {products?.map((product) => (
-            <Card key={product.id} className="bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-shadow" data-testid={`card-product-${product.id}`}>
-              <img 
-                src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+            <Card
+              key={product.id}
+              className="bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-shadow"
+              data-testid={`card-product-${product.id}`}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
                 alt={product.name}
                 className="w-full h-48 object-cover rounded-t-lg"
                 data-testid={`img-product-${product.id}`}
               />
               <CardContent className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-2" data-testid={`text-product-name-${product.id}`}>
+                <h3
+                  className="font-semibold text-gray-900 mb-2"
+                  data-testid={`text-product-name-${product.id}`}
+                >
                   {product.name}
                 </h3>
-                <p className="text-sm text-gray-600 mb-2" data-testid={`text-product-description-${product.id}`}>
+                <p
+                  className="text-sm text-gray-600 mb-2"
+                  data-testid={`text-product-description-${product.id}`}
+                >
                   {product.description}
                 </p>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-lg font-bold text-healthcare-blue-600" data-testid={`text-product-price-${product.id}`}>
-                    KSh {product.price}
+                  <span
+                    className="text-lg font-bold text-healthcare-blue-600"
+                    data-testid={`text-product-price-${product.id}`}
+                  >
+                    {formatPrice(product.price)}
                   </span>
-                  <Badge 
+                  <Badge
                     variant={product.inStock ? "default" : "destructive"}
-                    className={product.inStock ? "bg-green-100 text-green-800" : ""}
+                    className={
+                      product.inStock ? "bg-green-100 text-green-800" : ""
+                    }
                     data-testid={`badge-product-availability-${product.id}`}
                   >
                     {product.inStock ? "In Stock" : "Out of Stock"}
                   </Badge>
                 </div>
                 {product.prescriptionRequired && (
-                  <Badge variant="outline" className="mb-3" data-testid={`badge-prescription-required-${product.id}`}>
+                  <Badge
+                    variant="outline"
+                    className="mb-3"
+                    data-testid={`badge-prescription-required-${product.id}`}
+                  >
                     Prescription Required
                   </Badge>
                 )}
-                <Button 
-                  onClick={() => handleAddToCart(product.id)}
-                  disabled={!product.inStock || addToCartMutation.isPending}
-                  className="w-full bg-healthcare-green-500 hover:bg-healthcare-green-600 text-white py-2 rounded-lg transition-colors disabled:opacity-50"
-                  data-testid={`button-add-to-cart-${product.id}`}
-                >
-                  <ShoppingCart className="w-4 h-4 mr-2" />
-                  {addToCartMutation.isPending ? "Adding..." : "Add to Cart"}
-                </Button>
+                {(() => {
+                  const isAdding =
+                    addToCartMutation.isPending &&
+                    addingProductId === product.id;
+
+                  return (
+                    <Button
+                      onClick={() => handleAddToCart(product.id)}
+                      disabled={!product.inStock || isAdding}
+                      className="w-full bg-healthcare-green-500 hover:bg-healthcare-green-600 text-white py-2 rounded-lg transition-colors disabled:opacity-50"
+                      data-testid={`button-add-to-cart-${product.id}`}
+                    >
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      {isAdding ? "Adding..." : "Add to Cart"}
+                    </Button>
+                  );
+                })()}
               </CardContent>
             </Card>
           ))}

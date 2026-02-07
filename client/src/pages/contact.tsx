@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import Cart from "@/components/cart";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import image from "@/assets/image2.jpeg";
@@ -37,6 +38,7 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const { toast } = useToast();
 
   const contactMutation = useMutation({
@@ -132,7 +134,10 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header onOpenAppointment={() => {}} onToggleCart={() => {}} />
+      <Header
+        onOpenAppointment={() => {}}
+        onToggleCart={() => setIsCartOpen(true)}
+      />
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-healthcare-teal-400 to-healthcare-teal-500 text-white py-20">
@@ -541,7 +546,7 @@ export default function ContactPage() {
               className="text-xl text-gray-600"
               data-testid="text-map-description"
             >
-              Located in the heart of Westlands, Nairobi
+              Located in Ruiru, 2nd Sunrise Avenue
             </p>
           </div>
 
@@ -550,7 +555,7 @@ export default function ContactPage() {
             data-testid="map-container"
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.194803886235!2d36.8121!3d-1.2681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1736c5e7f1a5%3A0x1f1ef29f3b1c91a9!2sWestlands%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1693312345678!5m2!1sen!2ske"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63822.89659963052!2d36.87818550897406!3d-1.2083706453812544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f4100191b143d%3A0x31bfc2790b1c5387!2sLenoxhill%20healthcare!5e0!3m2!1sen!2ske!4v1770486456785!5m2!1sen!2ske"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -563,6 +568,8 @@ export default function ContactPage() {
       </section>
 
       <Footer />
+
+      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>
   );
 }

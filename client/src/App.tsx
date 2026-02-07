@@ -9,6 +9,7 @@ import Services from "@/pages/services";
 import Products from "@/pages/products";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
+import Wishlist from "@/pages/wishlist";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import ProtectedRoute from "./components/protected-route";
@@ -31,6 +32,7 @@ function Router() {
 
       <Route path="/services" component={Services} />
       <Route path="/products" component={Products} />
+      <Route path="/wishlist" component={Wishlist} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
       <Route component={NotFound} />

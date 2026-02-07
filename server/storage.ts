@@ -151,10 +151,10 @@ export class MemStorage implements IStorage {
     const products: InsertProduct[] = [
       // Prescription Medications
       {
-        name: "Amoxicillin 250mg Capsules",
+        name: "Amoxicillin 500mg Capsules (20s)",
         description:
-          "Broad-spectrum antibiotic for bacterial infections. Effective against respiratory tract infections, urinary tract infections, and skin infections. Take as prescribed by your doctor.",
-        price: "180.00",
+          "Broad-spectrum antibiotic for bacterial infections such as respiratory, ear, and urinary tract infections. Use only with a valid prescription and complete the full course.",
+        price: "420.00",
         category: "Prescription",
         targetAge: "Adults",
         inStock: true,
@@ -163,10 +163,10 @@ export class MemStorage implements IStorage {
           "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
       {
-        name: "Metformin 500mg Tablets",
+        name: "Metformin 500mg Tablets (60s)",
         description:
-          "First-line medication for Type 2 diabetes management. Helps control blood sugar levels and improves insulin sensitivity. Take with meals to reduce stomach upset.",
-        price: "320.00",
+          "First-line treatment for Type 2 diabetes. Helps improve insulin sensitivity and control blood sugar. Take with meals to reduce stomach upset.",
+        price: "650.00",
         category: "Prescription",
         targetAge: "Adults",
         inStock: true,
@@ -175,10 +175,10 @@ export class MemStorage implements IStorage {
           "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
       {
-        name: "Lisinopril 10mg Tablets",
+        name: "Amlodipine 5mg Tablets (30s)",
         description:
-          "ACE inhibitor for hypertension and heart failure management. Helps lower blood pressure and protects kidney function. Monitor blood pressure regularly during treatment.",
-        price: "280.00",
+          "Calcium channel blocker used to manage high blood pressure and angina. Helps relax blood vessels for improved blood flow.",
+        price: "480.00",
         category: "Prescription",
         targetAge: "Adults",
         inStock: true,
@@ -187,72 +187,60 @@ export class MemStorage implements IStorage {
           "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
       {
-        name: "Prednisolone 5mg Tablets",
+        name: "Salbutamol Inhaler 100mcg (200 doses)",
         description:
-          "Corticosteroid for inflammation and autoimmune conditions. Used for asthma, allergies, and inflammatory disorders. Follow tapering instructions carefully.",
-        price: "240.00",
+          "Relieves bronchospasm in asthma and COPD. Fast-acting inhaler for wheezing and shortness of breath. Use as directed by your clinician.",
+        price: "750.00",
         category: "Prescription",
-        targetAge: "Adults",
+        targetAge: "All ages",
         inStock: true,
         prescriptionRequired: true,
         imageUrl:
           "https://images.unsplash.com/photo-1576671081837-49000212a370?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
-      {
-        name: "Azithromycin 250mg Tablets",
-        description:
-          "Macrolide antibiotic for respiratory and soft tissue infections. Effective against atypical pneumonia and sexually transmitted infections. Complete full course.",
-        price: "450.00",
-        category: "Prescription",
-        targetAge: "Adults",
-        inStock: true,
-        prescriptionRequired: true,
-        imageUrl:
-          "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
 
       // Over-the-Counter Medications
       {
-        name: "Paracetamol 500mg Tablets",
+        name: "Paracetamol 500mg Tablets (100s)",
         description:
-          "Effective pain reliever and fever reducer for headaches, muscle pain, and fever. Safe for most adults and children over 12. Maximum 4g per day.",
-        price: "120.00",
+          "Pain relief and fever reduction for headaches, muscle aches, and colds. Do not exceed 4g per day in adults.",
+        price: "220.00",
         category: "Over-the-Counter",
-        targetAge: "Adults",
+        targetAge: "All ages",
         inStock: true,
         prescriptionRequired: false,
         imageUrl:
           "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
       {
-        name: "Ibuprofen 400mg Tablets",
+        name: "Ibuprofen 400mg Tablets (20s)",
         description:
-          "Anti-inflammatory pain reliever for arthritis, back pain, and menstrual cramps. Reduces inflammation and fever. Take with food to protect stomach.",
+          "Anti-inflammatory for pain, swelling, and fever. Take with food to reduce stomach irritation.",
+        price: "180.00",
+        category: "Over-the-Counter",
+        targetAge: "Adults",
+        inStock: true,
+        prescriptionRequired: false,
+        imageUrl:
+          "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+      },
+      {
+        name: "Cetirizine 10mg Tablets (10s)",
+        description:
+          "Non-drowsy antihistamine for allergies, sneezing, and itchy eyes. Provides up to 24-hour relief.",
         price: "150.00",
         category: "Over-the-Counter",
         targetAge: "Adults",
         inStock: true,
         prescriptionRequired: false,
         imageUrl:
-          "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
-      {
-        name: "Loratadine 10mg Tablets",
-        description:
-          "Non-drowsy antihistamine for allergies, hay fever, and hives. Provides 24-hour relief from sneezing, runny nose, and itchy eyes.",
-        price: "180.00",
-        category: "Over-the-Counter",
-        targetAge: "Adults",
-        inStock: true,
-        prescriptionRequired: false,
-        imageUrl:
           "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
       {
-        name: "Omeprazole 20mg Capsules",
+        name: "Omeprazole 20mg Capsules (14s)",
         description:
-          "Proton pump inhibitor for heartburn and acid reflux. Reduces stomach acid production for up to 24 hours. Best taken before breakfast.",
-        price: "220.00",
+          "Reduces stomach acid for heartburn and reflux. Best taken before breakfast for full-day relief.",
+        price: "320.00",
         category: "Over-the-Counter",
         targetAge: "Adults",
         inStock: true,
@@ -261,10 +249,10 @@ export class MemStorage implements IStorage {
           "https://images.unsplash.com/photo-1576671081837-49000212a370?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
       {
-        name: "Hydrocortisone 1% Cream",
+        name: "Oral Rehydration Salts Sachets (10s)",
         description:
-          "Topical corticosteroid for eczema, dermatitis, and insect bites. Reduces inflammation, itching, and redness. Apply thin layer 2-3 times daily.",
-        price: "160.00",
+          "Electrolyte replacement for dehydration from diarrhea, vomiting, or heat. Mix one sachet in clean water as directed.",
+        price: "300.00",
         category: "Over-the-Counter",
         targetAge: "All ages",
         inStock: true,
@@ -272,13 +260,25 @@ export class MemStorage implements IStorage {
         imageUrl:
           "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
+      {
+        name: "Guaifenesin Cough Syrup 100ml",
+        description:
+          "Expectorant syrup to loosen mucus and relieve productive coughs. Measure doses with the supplied cup.",
+        price: "260.00",
+        category: "Over-the-Counter",
+        targetAge: "All ages",
+        inStock: true,
+        prescriptionRequired: false,
+        imageUrl:
+          "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+      },
 
       // Health Supplements
       {
-        name: "Vitamin D3 1000IU Tablets",
+        name: "Vitamin C 1000mg Tablets (20s)",
         description:
-          "Essential vitamin for bone health, immune function, and muscle strength. Supports calcium absorption and helps prevent osteoporosis. Take with fatty meal.",
-        price: "850.00",
+          "Supports immune health and collagen formation. Take one tablet daily with food.",
+        price: "350.00",
         category: "Supplements",
         targetAge: "Adults",
         inStock: true,
@@ -287,10 +287,10 @@ export class MemStorage implements IStorage {
           "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
       {
-        name: "Omega-3 Fish Oil Capsules",
+        name: "Vitamin D3 1000IU Tablets (60s)",
         description:
-          "High-quality EPA and DHA for heart health, brain function, and inflammation reduction. Supports cardiovascular health and cognitive function.",
-        price: "1200.00",
+          "Supports bone health and immune function. Take with a meal containing fat for better absorption.",
+        price: "900.00",
         category: "Supplements",
         targetAge: "Adults",
         inStock: true,
@@ -299,10 +299,10 @@ export class MemStorage implements IStorage {
           "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
       {
-        name: "Multivitamin Complex",
+        name: "Iron + Folic Acid Tablets (30s)",
         description:
-          "Complete daily vitamin and mineral supplement with 23 essential nutrients. Supports energy, immunity, and overall wellness. One tablet daily with breakfast.",
-        price: "980.00",
+          "Supports healthy red blood cell production, especially during pregnancy and anemia prevention. Take as directed by a clinician.",
+        price: "380.00",
         category: "Supplements",
         targetAge: "Adults",
         inStock: true,
@@ -310,37 +310,13 @@ export class MemStorage implements IStorage {
         imageUrl:
           "https://images.unsplash.com/photo-1576671081837-49000212a370?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
-      {
-        name: "Iron 65mg Tablets",
-        description:
-          "Iron supplement for anemia treatment and prevention. Supports red blood cell formation and oxygen transport. Take on empty stomach for best absorption.",
-        price: "420.00",
-        category: "Supplements",
-        targetAge: "Adults",
-        inStock: true,
-        prescriptionRequired: false,
-        imageUrl:
-          "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
-      {
-        name: "Calcium + Vitamin D Tablets",
-        description:
-          "Combined calcium and vitamin D for bone health. Helps prevent osteoporosis and supports muscle function. Essential for women over 40.",
-        price: "650.00",
-        category: "Supplements",
-        targetAge: "Adults",
-        inStock: true,
-        prescriptionRequired: false,
-        imageUrl:
-          "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
 
       // Baby Care Products
       {
-        name: "Infant Formula Stage 1 (0-6 months)",
+        name: "Infant Formula Stage 1 (0-6 months, 900g)",
         description:
-          "Complete nutrition for newborns and infants up to 6 months. Enriched with DHA, ARA, and essential vitamins for healthy brain and eye development.",
-        price: "1200.00",
+          "Complete nutrition for infants when breastfeeding is not possible. Enriched with DHA and essential vitamins for growth and development.",
+        price: "1650.00",
         category: "Baby Care",
         targetAge: "Children",
         inStock: true,
@@ -349,9 +325,9 @@ export class MemStorage implements IStorage {
           "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
       {
-        name: "Baby Paracetamol Suspension",
+        name: "Baby Paracetamol Suspension 60ml",
         description:
-          "Safe fever and pain relief for infants and children 2 months to 6 years. Sugar-free strawberry flavor. Includes dosing syringe for accurate measurement.",
+          "Fever and pain relief for infants and children. Sugar-free with dosing syringe for accurate measurement.",
         price: "280.00",
         category: "Baby Care",
         targetAge: "Children",
@@ -360,48 +336,12 @@ export class MemStorage implements IStorage {
         imageUrl:
           "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
-      {
-        name: "Baby Cough & Cold Syrup",
-        description:
-          "Gentle relief for children's cough and cold symptoms. Natural honey-based formula suitable for children over 1 year. Soothes throat irritation.",
-        price: "320.00",
-        category: "Baby Care",
-        targetAge: "Children",
-        inStock: true,
-        prescriptionRequired: false,
-        imageUrl:
-          "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
-      {
-        name: "Baby Zinc Oxide Diaper Cream",
-        description:
-          "Protective barrier cream for diaper rash prevention and treatment. Contains 40% zinc oxide for maximum protection. Fragrance-free and hypoallergenic.",
-        price: "450.00",
-        category: "Baby Care",
-        targetAge: "Children",
-        inStock: true,
-        prescriptionRequired: false,
-        imageUrl:
-          "https://images.unsplash.com/photo-1576671081837-49000212a370?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
-      {
-        name: "Children's Multivitamin Gummies",
-        description:
-          "Delicious gummy vitamins with essential nutrients for growing children. Supports immune system, brain development, and healthy growth. Ages 2-12.",
-        price: "680.00",
-        category: "Baby Care",
-        targetAge: "Children",
-        inStock: true,
-        prescriptionRequired: false,
-        imageUrl:
-          "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
 
       // Medical Devices
       {
         name: "Digital Thermometer",
         description:
-          "Fast and accurate oral, rectal, and underarm temperature measurement. Fever alert feature with memory recall. Waterproof and easy to clean.",
+          "Fast and accurate temperature measurement with fever alert. Suitable for oral, underarm, or rectal use and easy to clean.",
         price: "450.00",
         category: "Medical Devices",
         targetAge: "All ages",
@@ -409,54 +349,6 @@ export class MemStorage implements IStorage {
         prescriptionRequired: false,
         imageUrl:
           "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
-      {
-        name: "Blood Pressure Monitor",
-        description:
-          "Automatic upper arm blood pressure monitor with irregular heartbeat detection. Large LCD display and memory for 2 users. WHO indicator included.",
-        price: "2800.00",
-        category: "Medical Devices",
-        targetAge: "Adults",
-        inStock: true,
-        prescriptionRequired: false,
-        imageUrl:
-          "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
-      {
-        name: "Glucose Meter Kit",
-        description:
-          "Complete blood glucose monitoring system for diabetes management. Includes meter, test strips, lancets, and carrying case. No coding required.",
-        price: "1800.00",
-        category: "Medical Devices",
-        targetAge: "Adults",
-        inStock: true,
-        prescriptionRequired: false,
-        imageUrl:
-          "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
-      {
-        name: "Pulse Oximeter",
-        description:
-          "Fingertip pulse oximeter measures blood oxygen saturation and pulse rate. LED display with adjustable brightness. Essential for respiratory monitoring.",
-        price: "1200.00",
-        category: "Medical Devices",
-        targetAge: "All ages",
-        inStock: true,
-        prescriptionRequired: false,
-        imageUrl:
-          "https://images.unsplash.com/photo-1576671081837-49000212a370?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-      },
-      {
-        name: "First Aid Kit Complete",
-        description:
-          "Comprehensive first aid kit with 100+ pieces including bandages, antiseptics, pain relievers, and emergency supplies. Perfect for home and travel.",
-        price: "2200.00",
-        category: "Medical Devices",
-        targetAge: "All ages",
-        inStock: true,
-        prescriptionRequired: false,
-        imageUrl:
-          "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       },
     ];
 

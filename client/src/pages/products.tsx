@@ -37,10 +37,23 @@ export default function ProductsPage() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
+  const [addingProductId, setAddingProductId] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const sessionId = "guest-session";
+
+  const formatPrice = (price: string | number | null) => {
+    const amount = typeof price === "string" ? Number(price) : (price ?? 0);
+    if (Number.isNaN(amount)) {
+      return "KES 0.00";
+    }
+
+    return `KES ${amount.toLocaleString("en-KE", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  };
 
   const { data: products, isLoading } = useQuery<Product[]>({
     queryKey: ["/api/products", categoryFilter, ageFilter, searchTerm],
@@ -66,6 +79,10 @@ export default function ProductsPage() {
       });
       return response.json();
     },
+    onMutate: (productId: string) => {
+      setAddingProductId(productId);
+      return { productId };
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/cart", sessionId] });
       toast({
@@ -79,6 +96,11 @@ export default function ProductsPage() {
         description: "Failed to add product to cart. Please try again.",
         variant: "destructive",
       });
+    },
+    onSettled: (_data, _error, _variables, context) => {
+      setAddingProductId((current) =>
+        current === context?.productId ? null : current,
+      );
     },
   });
 
@@ -439,7 +461,7 @@ export default function ProductsPage() {
                         className="text-lg font-bold text-healthcare-blue-600"
                         data-testid={`text-product-price-${product.id}`}
                       >
-                        KSh {product.price}
+                        {formatPrice(product.price)}
                       </span>
                       <Badge
                         variant={product.inStock ? "default" : "destructive"}
@@ -452,19 +474,23 @@ export default function ProductsPage() {
                       </Badge>
                     </div>
                     <div className="flex space-x-2">
-                      <Button
-                        onClick={() => handleAddToCart(product.id)}
-                        disabled={
-                          !product.inStock || addToCartMutation.isPending
-                        }
-                        className="flex-1 bg-healthcare-green-500 hover:bg-healthcare-green-600 text-white py-2 rounded-lg transition-colors disabled:opacity-50"
-                        data-testid={`button-add-to-cart-${product.id}`}
-                      >
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        {addToCartMutation.isPending
-                          ? "Adding..."
-                          : "Add to Cart"}
-                      </Button>
+                      {(() => {
+                        const isAdding =
+                          addToCartMutation.isPending &&
+                          addingProductId === product.id;
+
+                        return (
+                          <Button
+                            onClick={() => handleAddToCart(product.id)}
+                            disabled={!product.inStock || isAdding}
+                            className="flex-1 bg-healthcare-green-500 hover:bg-healthcare-green-600 text-white py-2 rounded-lg transition-colors disabled:opacity-50"
+                            data-testid={`button-add-to-cart-${product.id}`}
+                          >
+                            <ShoppingCart className="w-4 h-4 mr-2" />
+                            {isAdding ? "Adding..." : "Add to Cart"}
+                          </Button>
+                        );
+                      })()}
                       <Button
                         onClick={() => handleProductClick(product)}
                         variant="outline"

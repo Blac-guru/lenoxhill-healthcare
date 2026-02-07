@@ -15,12 +15,14 @@ import {
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import AppointmentModal from "@/components/appointment-modal";
+import Cart from "@/components/cart";
 import type { Service } from "@shared/schema";
 import image from "@/assets/image6.jpeg";
 import image2 from "@/assets/image4.jpeg";
 
 export default function ServicesPage() {
   const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const { data: services, isLoading } = useQuery<Service[]>({
     queryKey: ["/api/services"],
@@ -86,7 +88,7 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-gray-50">
       <Header
         onOpenAppointment={() => setIsAppointmentModalOpen(true)}
-        onToggleCart={() => {}}
+        onToggleCart={() => setIsCartOpen(true)}
       />
 
       {/* Hero Section */}
@@ -428,6 +430,8 @@ export default function ServicesPage() {
       </section>
 
       <Footer />
+
+      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
       <AppointmentModal
         isOpen={isAppointmentModalOpen}

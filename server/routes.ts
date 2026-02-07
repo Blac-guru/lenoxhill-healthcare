@@ -1,13 +1,14 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { 
-  insertServiceSchema, 
-  insertProductSchema, 
-  insertAppointmentSchema, 
+import { fetchProductImage } from "./serpapi";
+import {
+  insertServiceSchema,
+  insertProductSchema,
+  insertAppointmentSchema,
   insertContactMessageSchema,
   insertCartItemSchema,
-  insertOrderSchema
+  insertOrderSchema,
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -40,9 +41,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const products = await storage.getProducts({
         category: category as string,
         targetAge: targetAge as string,
-        search: search as string
+        search: search as string,
       });
-      res.json(products);
+      const hydratedProducts = await Promise.all(
+        products.map(async (product) => {
+          const shouldHydrate =
+            !product.imageUrl || product.imageUrl.includes("unsplash.com");
+
+          if (!shouldHydrate) {
+            return product;
+          }
+
+          const imageUrl = await fetchProductImage(product.name);
+          return {
+            ...product,
+            imageUrl: imageUrl ?? product.imageUrl,
+          };
+        }),
+      );
+
+      res.json(hydratedProducts);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch products" });
     }
